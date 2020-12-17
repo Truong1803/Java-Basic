@@ -299,7 +299,7 @@ public class QuanLyNhanSuController implements Initializable {
 
         List<NhanVien> inputNhanviens = null;
         try {
-            inputNhanviens = readStudents("data.txt");
+            inputNhanviens = readNhanviens("data.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -326,7 +326,7 @@ public class QuanLyNhanSuController implements Initializable {
         }
         writer.close();
     }
-    private static List<NhanVien> readStudents(String filename)
+    private static List<NhanVien> readNhanviens(String filename)
             throws IOException {
         List<NhanVien> nhanViens = new ArrayList<>();
         /*Paths.get(filename)*/

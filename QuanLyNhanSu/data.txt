@@ -4,4 +4,3 @@ A3223,Ngo,12,Nu,123124124,@,Ha nam,ar
 A322442,Trung,32,Nam,213,we@,Ha nam,Giam doc
 A888888,Trung,2,Nu,08127367,trung@gmail.com,Phu Tho,Giam doc
 A82882,Ha,15,Nam,01239988,Ha@mail.com,Bac Ninh,Thu ky
-A33340,Bùi Mạnh Cường,20,Nam,032176371246,Cuong@gmail.com,Quảng Ninh ,Thư ký
