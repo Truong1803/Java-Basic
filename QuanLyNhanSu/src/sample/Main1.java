@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,8 +17,6 @@ import java.io.*;
 import java.util.Optional;
 
 public class Main1 extends Application {
-    Stage window;
-    Scene scene1, scene2;
     public static void main(String[] args) {
         launch(args);
     }
@@ -27,6 +26,7 @@ public class Main1 extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("./Style/style.css").toExternalForm());
+        primaryStage.getIcons().add(new Image("./sample/Image/icon.png"));
         primaryStage.setTitle("Login");
         primaryStage.setScene(scene);
         primaryStage.show();

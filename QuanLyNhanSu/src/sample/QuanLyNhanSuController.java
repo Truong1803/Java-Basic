@@ -1,6 +1,8 @@
 package sample;
+import com.sun.javafx.collections.MappingChange;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -29,6 +31,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static sample.HomeController.getData;
 
 public class QuanLyNhanSuController implements Initializable {
     @FXML
@@ -66,7 +70,7 @@ public class QuanLyNhanSuController implements Initializable {
     @FXML
     private TextField emailClick;
     @FXML
-    private TextField positionClick;
+    private ComboBox<String> positionClick;
     @FXML
     private TextField ceo_salaryClick;
     @FXML
@@ -76,15 +80,30 @@ public class QuanLyNhanSuController implements Initializable {
     @FXML
     private ObservableList<NhanVien> nhanvienList;
     @FXML
-    private ObservableList<NhanVien> nhanvienList1;
+    private ObservableList<ChucVu> PositionList;
+    @FXML
+    private ObservableList<NhanVien> nhanvienListAll;
+    @FXML
+    private ObservableMap<String,Double> Salary;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        nhanvienList = FXCollections.observableArrayList(
-        );
+        ObservableList<String> pos = FXCollections.observableArrayList();
+        Salary = FXCollections.observableHashMap();
+        PositionList = FXCollections.observableArrayList();
+        for(ChucVu chucvu : readDataPos()){
+            PositionList.add(chucvu);
+            pos.add(chucvu.getPosition());
+            Salary.put(chucvu.getPosition(), chucvu.getCoe_Salary());
+        }
+        positionClick.setItems(pos);
+        nhanvienList = FXCollections.observableArrayList();
+        nhanvienListAll = FXCollections.observableArrayList();
         if(readData()!=null){
             for(NhanVien nhanvien : readData()){
-                nhanvienList.add(nhanvien);
-                //System.out.println(nhanvien.getID() + "," + nhanvien.getName() + "," + nhanvien.getAge()+","+nhanvien.getSex() + "," + nhanvien.getPhoneNumber() + "," + nhanvien.getGmail()+","+nhanvien.getAddress() + "," + nhanvien.getPosition() + "\n");
+                nhanvienListAll.add(nhanvien);
+                if(nhanvien.getBranch().contains(getData())){
+                    nhanvienList.add(nhanvien);
+                }
             }
         }
         idColumn.setCellValueFactory(new PropertyValueFactory<NhanVien, String>("ID"));
@@ -97,6 +116,82 @@ public class QuanLyNhanSuController implements Initializable {
         positionColumn.setCellValueFactory(new PropertyValueFactory<NhanVien, String>("Position"));
         ceo_salaryColumn.setCellValueFactory(new PropertyValueFactory<NhanVien, String>("Coe_Salary"));
         table.setItems(nhanvienList);
+
+    }
+
+    public void setTextSalary(){
+        ceo_salaryClick.setText(String.valueOf(Salary.get(positionClick.getValue())));
+    }
+
+    public void setNull(){
+        idClick.setText("");
+        nameClick.setText("");
+        ageClick.setText("");
+        sexClick.setText("");
+        addressClick.setText("");
+        phoneClick.setText("");
+        emailClick.setText("");
+        positionClick.setValue("");
+        ceo_salaryClick.setText("");
+    }
+
+    @FXML
+    private void handleClickTableView(MouseEvent click) {
+        NhanVien nhanvien = table.getSelectionModel().getSelectedItem();
+        if (nhanvien!= null) {
+            idClick.setText(nhanvien.getID());
+            nameClick.setText(nhanvien.getName());
+            ageClick.setText(nhanvien.getAge());
+            sexClick.setText(nhanvien.getSex());
+            addressClick.setText(nhanvien.getAddress());
+            phoneClick.setText(nhanvien.getPhoneNumber());
+            emailClick.setText(nhanvien.getGmail());
+            //positionClick.setText(nhanvien.getPosition());
+            positionClick.setValue(String.valueOf(nhanvien.getPosition()));
+            ceo_salaryClick.setText(String.valueOf(nhanvien.getCoe_Salary()));
+
+        }
+    }
+    @FXML
+    private void handleClickSearch(MouseEvent click) {
+        Search();
+    }
+    @FXML
+    private void handleClickFilter(MouseEvent click) {
+        Filter();
+    }
+    @FXML
+    public void add (ActionEvent e){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Xác Nhận");
+        alert.setHeaderText("THÊM");
+        alert.setContentText("Bạn có chắc chắn muốn thêm nhân viên này ?");
+        ButtonType buttonTypeYes = new ButtonType("Yes",ButtonBar.ButtonData.YES);
+        ButtonType buttonTypeNo = new ButtonType("No",ButtonBar.ButtonData.NO);
+        ButtonType buttonTypeCancel = new ButtonType("Cancel",ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonTypeYes,buttonTypeNo,buttonTypeCancel);
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get()==buttonTypeYes) {
+            NhanVien newNhanvien = new NhanVien();
+            newNhanvien.setBranch(getData());
+            newNhanvien.setID(idClick.getText());
+            newNhanvien.setName(nameClick.getText());
+            newNhanvien.setAge(ageClick.getText());
+            newNhanvien.setSex(sexClick.getText());
+            newNhanvien.setAddress(addressClick.getText());
+            newNhanvien.setPhoneNumber(phoneClick.getText());
+            newNhanvien.setGmail(emailClick.getText());
+            newNhanvien.setPosition(String.valueOf(positionClick.getValue()));
+            newNhanvien.setCoe_Salary(Double.parseDouble(ceo_salaryClick.getText()));
+            nhanvienList.add(newNhanvien);
+            nhanvienListAll.add(newNhanvien);
+            setNull();
+            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+            alert1.setTitle("Information");
+            alert1.setHeaderText("Bạn đã thêm thành công");
+            alert1.show();
+        }
+        saveData();
 
     }
     public void edit(){
@@ -114,6 +209,7 @@ public class QuanLyNhanSuController implements Initializable {
             NhanVien newnhanvien = new NhanVien();
             for(NhanVien nhanvien : nhanvienList){
                 if(nhanvien==selected){
+                    newnhanvien.setBranch(getData());
                     newnhanvien.setID(idClick.getText());
                     newnhanvien.setName(nameClick.getText());
                     newnhanvien.setAge(ageClick.getText());
@@ -121,72 +217,22 @@ public class QuanLyNhanSuController implements Initializable {
                     newnhanvien.setAddress(addressClick.getText());
                     newnhanvien.setPhoneNumber(phoneClick.getText());
                     newnhanvien.setGmail(emailClick.getText());
-                    newnhanvien.setPosition(positionClick.getText());
+                    newnhanvien.setPosition(String.valueOf(positionClick.getValue()));
+                    newnhanvien.setCoe_Salary(Double.parseDouble(ceo_salaryClick.getText()));
                     nhanvienList.set(nhanvienList.indexOf(nhanvien),newnhanvien);
+                    for(NhanVien nhanvien1 : nhanvienListAll){
+                        if(nhanvien1==selected){
+                            nhanvienListAll.set(nhanvienListAll.indexOf(nhanvien1),newnhanvien);
+                        }
+
+                    }
+
                 }
             }
             setNull();
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setTitle("Information");
             alert1.setHeaderText("Bạn đã sửa thành công");
-            alert1.show();
-        }
-        saveData();
-
-    }
-    public void setNull(){
-        idClick.setText("");
-        nameClick.setText("");
-        ageClick.setText("");
-        sexClick.setText("");
-        addressClick.setText("");
-        phoneClick.setText("");
-        emailClick.setText("");
-        positionClick.setText("");
-        ceo_salaryClick.setText("");
-    }
-
-    @FXML
-    private void handleClickTableView(MouseEvent click) {
-        NhanVien nhanvien = table.getSelectionModel().getSelectedItem();
-        if (nhanvien!= null) {
-            idClick.setText(nhanvien.getID());
-            nameClick.setText(nhanvien.getName());
-            ageClick.setText(nhanvien.getAge());
-            sexClick.setText(nhanvien.getSex());
-            addressClick.setText(nhanvien.getAddress());
-            phoneClick.setText(nhanvien.getPhoneNumber());
-            emailClick.setText(nhanvien.getGmail());
-            positionClick.setText(nhanvien.getPosition());
-            ceo_salaryClick.setText(String.valueOf(nhanvien.getCoe_Salary()));
-        }
-    }
-    @FXML
-    public void add (ActionEvent e){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Xác Nhận");
-        alert.setHeaderText("THÊM");
-        alert.setContentText("Bạn có chắc chắn muốn thêm nhân viên này ?");
-        ButtonType buttonTypeYes = new ButtonType("Yes",ButtonBar.ButtonData.YES);
-        ButtonType buttonTypeNo = new ButtonType("No",ButtonBar.ButtonData.NO);
-        ButtonType buttonTypeCancel = new ButtonType("Cancel",ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(buttonTypeYes,buttonTypeNo,buttonTypeCancel);
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get()==buttonTypeYes) {
-            NhanVien newNhanvien = new NhanVien();
-            newNhanvien.setID(idClick.getText());
-            newNhanvien.setName(nameClick.getText());
-            newNhanvien.setAge(ageClick.getText());
-            newNhanvien.setSex(sexClick.getText());
-            newNhanvien.setAddress(addressClick.getText());
-            newNhanvien.setPhoneNumber(phoneClick.getText());
-            newNhanvien.setGmail(emailClick.getText());
-            newNhanvien.setPosition(positionClick.getText());
-            nhanvienList.add(newNhanvien);
-            setNull();
-            Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
-            alert1.setTitle("Information");
-            alert1.setHeaderText("Bạn đã thêm thành công");
             alert1.show();
         }
         saveData();
@@ -205,6 +251,7 @@ public class QuanLyNhanSuController implements Initializable {
         if(result.get()==buttonTypeYes) {
             NhanVien selected = table.getSelectionModel().getSelectedItem();
             nhanvienList.remove(selected);
+            nhanvienListAll.remove(selected);
             setNull();
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setTitle("Information");
@@ -214,25 +261,15 @@ public class QuanLyNhanSuController implements Initializable {
         saveData();
 
     }
-    public void backLogin(ActionEvent e)throws Exception{
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Xác Nhận");
-        alert.setHeaderText("ĐĂNG XUẤT");
-        alert.setContentText("Bạn có chắc chắn muốn đăng xuất khỏi tài khoản này ?");
-        ButtonType buttonTypeYes = new ButtonType("Yes",ButtonBar.ButtonData.YES);
-        ButtonType buttonTypeNo = new ButtonType("No",ButtonBar.ButtonData.NO);
-        ButtonType buttonTypeCancel = new ButtonType("Cancel",ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(buttonTypeYes,buttonTypeNo,buttonTypeCancel);
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get()==buttonTypeYes){
-            Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("Login.fxml"));
-            Parent LoginParent = loader.load();
-            Scene scene = new Scene(LoginParent);
-            scene.getStylesheets().add(getClass().getResource("./Style/style.css").toExternalForm());
-            stage.setScene(scene);
-        }
+    public void backHome(ActionEvent e)throws Exception{
+        Stage stage = (Stage)((Node) e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("Home.fxml"));
+        Parent LoginParent = loader.load();
+        stage.setTitle("Home");
+        Scene scene = new Scene(LoginParent);
+        scene.getStylesheets().add(getClass().getResource("./Style/style.css").toExternalForm());
+        stage.setScene(scene);
         saveData();
     }
     public void Search(){
@@ -290,7 +327,7 @@ public class QuanLyNhanSuController implements Initializable {
             System.out.println("Erro");
         }*/
         try {
-            writeToTextFile("data.txt", nhanvienList);
+            writeToTextFile("data.txt", nhanvienListAll);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -322,7 +359,7 @@ public class QuanLyNhanSuController implements Initializable {
 
         FileWriter writer = new FileWriter(filename);
         for (NhanVien nhanvien : nhanViens) {
-            writer.write(nhanvien.getID() + "," + nhanvien.getName() + "," + nhanvien.getAge()+","+nhanvien.getSex() + "," + nhanvien.getPhoneNumber() + "," + nhanvien.getGmail()+","+nhanvien.getAddress() + "," + nhanvien.getPosition() + "\n");
+            writer.write(nhanvien.getBranch()+ "," +nhanvien.getID() + "," + nhanvien.getName() + "," + nhanvien.getAge()+","+nhanvien.getSex() + "," + nhanvien.getPhoneNumber() + "," + nhanvien.getGmail()+","+nhanvien.getAddress() + "," + nhanvien.getPosition()+","+nhanvien.getCoe_Salary() + "\n");
         }
         writer.close();
     }
@@ -335,9 +372,32 @@ public class QuanLyNhanSuController implements Initializable {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("data.txt")));
         while ((line = reader.readLine()) != null) {
             String[] names = line.split(",");
-            nhanViens.add(new NhanVien(names[0], names[1],names[2],names[3], names[4],names[5],names[6], names[7]));
-            //System.out.println("******"+" "+names[0]+" "+ names[1]+" "+names[2]+" "+names[3]+" "+ names[4]+" "+names[5]+" "+names[6]+" "+ names[7]);
+            nhanViens.add(new NhanVien(names[0], names[1],names[2],names[3], names[4],names[5],names[6], names[7], names[8],Double.parseDouble(names[9])));
+            //System.out.println("******"+" "+names[0]+" "+ names[1]+" "+names[2]+" "+names[3]+" "+ names[4]+" "+names[5]+" "+names[6]+" "+ names[7]+" "+names[8]);
         }
         return nhanViens;
+    }
+    public List<ChucVu> readDataPos() {
+
+        List<ChucVu> inputPositions = null;
+        try {
+            inputPositions = readPositions("Position.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return inputPositions;
+    }
+    private static List<ChucVu> readPositions(String filename)
+            throws IOException {
+        List<ChucVu> Positions = new ArrayList<>();
+        /*Paths.get(filename)*/
+        //BufferedReader reader = Files.newBufferedReader(new InputStreamReader());
+        String line;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("Position.txt")));
+        while ((line = reader.readLine()) != null) {
+            String[] names = line.split(",");
+            Positions.add(new ChucVu(names[0], Double.parseDouble(names[1])));
+        }
+        return Positions;
     }
 }

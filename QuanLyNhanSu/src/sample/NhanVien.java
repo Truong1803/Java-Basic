@@ -3,6 +3,7 @@ package sample;
 import java.io.Serializable;
 
 public class NhanVien  extends ChucVu implements Serializable {
+    private String Branch;
     private String ID;
     private String Name;
     private String Age;
@@ -11,17 +12,26 @@ public class NhanVien  extends ChucVu implements Serializable {
     private String PhoneNumber;
     private String Gmail;
     public NhanVien(){
-        super("");
+
     };
-    public NhanVien(String ID, String name, String age,String sex, String phoneNumber,String gmail,String address, String position) {
-        super(position);
-        this.ID = ID;
+    public NhanVien(String branch,String id, String name, String age,String sex, String phoneNumber,String gmail,String address, String position,Double ceo_Salary) {
+        super(position,ceo_Salary);
+        Branch = branch;
+        ID = id;
         Name = name;
         Age = age;
         Sex = sex;
         Address = address;
         PhoneNumber = phoneNumber;
         Gmail = gmail;
+    }
+
+    public String getBranch() {
+        return Branch;
+    }
+
+    public void setBranch(String branch) {
+        Branch = branch;
     }
 
     public String getSex() { return Sex; }
@@ -75,8 +85,5 @@ public class NhanVien  extends ChucVu implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
     }
-    @Override
-    public String toString() {
-        return String.format(getID() + "," + getName() + "," + getAge()+getSex() + "," +getPhoneNumber() + "," + getGmail()+getAddress() + "," + getPosition() + "," + getCoe_Salary());
-    }
+
 }
