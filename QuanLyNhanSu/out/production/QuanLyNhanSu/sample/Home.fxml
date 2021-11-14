@@ -58,34 +58,34 @@
             <Font name="Poppins Medium" size="40.0" />
          </font>
       </Label>
-      <Button layoutX="250.0" layoutY="163.0" mnemonicParsing="false" onAction="#BranchA" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch A">
+      <Button layoutX="250.0" layoutY="163.0" mnemonicParsing="false" onAction="#BranchA" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch A" textFill="#42526e">
          <font>
-            <Font name="Poppins Medium" size="13.0" />
+            <Font name="Poppins Medium" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="510.0" layoutY="163.0" mnemonicParsing="false" onAction="#BranchB" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch B">
+      <Button layoutX="510.0" layoutY="163.0" mnemonicParsing="false" onAction="#BranchB" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch B" textFill="#42526e">
          <font>
-            <Font name="Poppins Medium" size="13.0" />
+            <Font name="Poppins Medium" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="770.0" layoutY="163.0" mnemonicParsing="false" onAction="#BranchC" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch C">
+      <Button layoutX="770.0" layoutY="163.0" mnemonicParsing="false" onAction="#BranchC" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch C" textFill="#42526e">
          <font>
-            <Font name="Poppins Medium" size="13.0" />
+            <Font name="Poppins Medium" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="250.0" layoutY="356.0" mnemonicParsing="false" onAction="#BranchD" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch D">
+      <Button layoutX="250.0" layoutY="356.0" mnemonicParsing="false" onAction="#BranchD" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch D" textFill="#42526e">
          <font>
-            <Font name="Poppins Medium" size="13.0" />
+            <Font name="Poppins Medium" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="510.0" layoutY="356.0" mnemonicParsing="false" onAction="#BranchE" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch E">
+      <Button layoutX="510.0" layoutY="356.0" mnemonicParsing="false" onAction="#BranchE" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch E" textFill="#42526e">
          <font>
-            <Font name="Poppins Medium" size="13.0" />
+            <Font name="Poppins Medium" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="770.0" layoutY="356.0" mnemonicParsing="false" onAction="#BranchF" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch F">
+      <Button layoutX="770.0" layoutY="356.0" mnemonicParsing="false" onAction="#BranchF" prefHeight="143.0" prefWidth="221.0" styleClass="bnt_branch" text="Branch F" textFill="#42526e">
          <font>
-            <Font name="Poppins Medium" size="13.0" />
+            <Font name="Poppins Medium" size="16.0" />
          </font>
       </Button>
       <Button layoutX="221.0" layoutY="51.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-text-fill: #42526E;" text="Branch">
