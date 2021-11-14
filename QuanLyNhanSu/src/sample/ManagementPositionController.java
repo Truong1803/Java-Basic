@@ -39,16 +39,16 @@ public class ManagementPositionController implements Initializable {
     @FXML
     private TableView<ChucVu> table;
     @FXML
-    private ObservableList<NhanVien> nhanvienListAll;
+    private ObservableList<NhanVien> nhanVienListAll;
     @FXML
-    private ObservableList<NhanVien> nhanvienListCopy;
+    private ObservableList<NhanVien> nhanVienListCopy;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         PositionList = FXCollections.observableArrayList();
-        nhanvienListAll = FXCollections.observableArrayList();
+        nhanVienListCopy = FXCollections.observableArrayList();
         if(readData()!=null){
-            for(NhanVien nhanvien : readData()){
-                nhanvienListAll.add(nhanvien);
+            for(NhanVien nhanVien : readData()){
+                nhanVienListAll.add(nhanVien);
             }
         }
         if(readDataPos()!=null){
@@ -118,7 +118,7 @@ public class ManagementPositionController implements Initializable {
                     newchucvu.setCoe_Salary(Double.parseDouble(idCeo_Salary.getText()));
                     newchucvu.setPosition(idPosition.getText());
                     PositionList.set(PositionList.indexOf(chucvu),newchucvu);
-                    for(NhanVien nhanvien : nhanvienListAll){
+                    for(NhanVien nhanvien : nhanVienListAll){
                         if(nhanvien.getPosition().contains(chucvu.getPosition())){
                             NhanVien newnhanvien = new NhanVien();
                             newnhanvien.setBranch(nhanvien.getBranch());
@@ -131,7 +131,7 @@ public class ManagementPositionController implements Initializable {
                             newnhanvien.setGmail(nhanvien.getGmail());
                             newnhanvien.setPosition(nhanvien.getPosition());
                             newnhanvien.setCoe_Salary(Double.parseDouble(idCeo_Salary.getText()));
-                            nhanvienListAll.set(nhanvienListAll.indexOf(nhanvien),newnhanvien);
+                            nhanVienListAll.set(nhanVienListAll.indexOf(nhanvien),newnhanvien);
                         }
                     }
                 }
@@ -158,7 +158,7 @@ public class ManagementPositionController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get()==buttonTypeYes) {
             ChucVu selected = table.getSelectionModel().getSelectedItem();
-            for(NhanVien nhanvien : nhanvienListAll){
+            for(NhanVien nhanvien : nhanVienListAll){
                 if(nhanvien.getPosition().contains(selected.getPosition())){
                     NhanVien newnhanvien = new NhanVien();
                     newnhanvien.setBranch(nhanvien.getBranch());
@@ -171,7 +171,7 @@ public class ManagementPositionController implements Initializable {
                     newnhanvien.setGmail(nhanvien.getGmail());
                     newnhanvien.setPosition("null");
                     newnhanvien.setCoe_Salary(0.0);
-                    nhanvienListAll.set(nhanvienListAll.indexOf(nhanvien),newnhanvien);
+                    nhanVienListAll.set(nhanVienListAll.indexOf(nhanvien),newnhanvien);
                 }
             }
             PositionList.remove(selected);
@@ -268,7 +268,7 @@ public class ManagementPositionController implements Initializable {
             System.out.println("Erro");
         }*/
         try {
-            writeToTextFile("data.txt", nhanvienListAll);
+            writeToTextFile("data.txt", nhanVienListAll);
         } catch (IOException e) {
             e.printStackTrace();
         }
