@@ -19,7 +19,7 @@
                   <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                </padding>
             </Button>
-            <Label fx:id="Wrong" layoutX="111.0" layoutY="149.0" prefHeight="21.0" prefWidth="212.0" />
+            <Label fx:id="Wrong" layoutX="77.0" layoutY="139.0" prefHeight="21.0" prefWidth="212.0" />
             <Label layoutX="33.0" layoutY="41.0" text="Username:">
                <font>
                   <Font name="Roboto Medium" size="15.0" />
