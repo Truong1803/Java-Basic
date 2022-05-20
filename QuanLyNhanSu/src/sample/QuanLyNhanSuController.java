@@ -78,11 +78,11 @@ public class QuanLyNhanSuController implements Initializable {
     @FXML
     private TextField filterText;
     @FXML
-    private ObservableList<NhanVien> nhanvienList;
+    private ObservableList<NhanVien> nhanVienList;
     @FXML
     private ObservableList<ChucVu> PositionList;
     @FXML
-    private ObservableList<NhanVien> nhanvienListAll;
+    private ObservableList<NhanVien> nhanVienListAll;
     @FXML
     private ObservableMap<String,Double> Salary;
     @Override
@@ -96,13 +96,13 @@ public class QuanLyNhanSuController implements Initializable {
             Salary.put(chucvu.getPosition(), chucvu.getCoe_Salary());
         }
         positionClick.setItems(pos);
-        nhanvienList = FXCollections.observableArrayList();
-        nhanvienListAll = FXCollections.observableArrayList();
+        nhanVienList = FXCollections.observableArrayList();
+        nhanVienListAll = FXCollections.observableArrayList();
         if(readData()!=null){
-            for(NhanVien nhanvien : readData()){
-                nhanvienListAll.add(nhanvien);
-                if(nhanvien.getBranch().contains(getData())){
-                    nhanvienList.add(nhanvien);
+            for(NhanVien nhanVien : readData()){
+                nhanVienListAll.add(nhanVien);
+                if(nhanVien.getBranch().contains(getData())){
+                    nhanVienList.add(nhanVien);
                 }
             }
         }
@@ -115,7 +115,7 @@ public class QuanLyNhanSuController implements Initializable {
         emailColumn.setCellValueFactory(new PropertyValueFactory<NhanVien, String>("Gmail"));
         positionColumn.setCellValueFactory(new PropertyValueFactory<NhanVien, String>("Position"));
         ceo_salaryColumn.setCellValueFactory(new PropertyValueFactory<NhanVien, String>("Coe_Salary"));
-        table.setItems(nhanvienList);
+        table.setItems(nhanVienList);
 
     }
 
@@ -183,8 +183,8 @@ public class QuanLyNhanSuController implements Initializable {
             newNhanvien.setGmail(emailClick.getText());
             newNhanvien.setPosition(String.valueOf(positionClick.getValue()));
             newNhanvien.setCoe_Salary(Double.parseDouble(ceo_salaryClick.getText()));
-            nhanvienList.add(newNhanvien);
-            nhanvienListAll.add(newNhanvien);
+            nhanVienList.add(newNhanvien);
+            nhanVienListAll.add(newNhanvien);
             setNull();
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setTitle("Information");
@@ -207,7 +207,7 @@ public class QuanLyNhanSuController implements Initializable {
         if(result.get()==buttonTypeYes) {
             NhanVien selected = table.getSelectionModel().getSelectedItem();
             NhanVien newnhanvien = new NhanVien();
-            for(NhanVien nhanvien : nhanvienList){
+            for(NhanVien nhanvien : nhanVienListAll){
                 if(nhanvien==selected){
                     newnhanvien.setBranch(getData());
                     newnhanvien.setID(idClick.getText());
@@ -219,10 +219,10 @@ public class QuanLyNhanSuController implements Initializable {
                     newnhanvien.setGmail(emailClick.getText());
                     newnhanvien.setPosition(String.valueOf(positionClick.getValue()));
                     newnhanvien.setCoe_Salary(Double.parseDouble(ceo_salaryClick.getText()));
-                    nhanvienList.set(nhanvienList.indexOf(nhanvien),newnhanvien);
-                    for(NhanVien nhanvien1 : nhanvienListAll){
+                    nhanVienList.set(nhanVienList.indexOf(nhanvien),newnhanvien);
+                    for(NhanVien nhanvien1 : nhanVienListAll){
                         if(nhanvien1==selected){
-                            nhanvienListAll.set(nhanvienListAll.indexOf(nhanvien1),newnhanvien);
+                            nhanVienListAll.set(nhanVienListAll.indexOf(nhanvien1),newnhanvien);
                         }
 
                     }
@@ -250,8 +250,8 @@ public class QuanLyNhanSuController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get()==buttonTypeYes) {
             NhanVien selected = table.getSelectionModel().getSelectedItem();
-            nhanvienList.remove(selected);
-            nhanvienListAll.remove(selected);
+            nhanVienList.remove(selected);
+            nhanVienListAll.remove(selected);
             setNull();
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setTitle("Information");
@@ -273,7 +273,7 @@ public class QuanLyNhanSuController implements Initializable {
         saveData();
     }
     public void Search(){
-        FilteredList<NhanVien> filteredData = new FilteredList<>(nhanvienList, p -> true);
+        FilteredList<NhanVien> filteredData = new FilteredList<>(nhanVienList, p -> true);
         searchText.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(NhanVien -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -299,7 +299,7 @@ public class QuanLyNhanSuController implements Initializable {
         table.setItems(sortedData);
     }
     public void Filter(){
-        FilteredList<NhanVien> filteredData1 = new FilteredList<>(nhanvienList, p -> true);
+        FilteredList<NhanVien> filteredData1 = new FilteredList<>(nhanVienList, p -> true);
         filterText.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData1.setPredicate(NhanVien -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -327,7 +327,7 @@ public class QuanLyNhanSuController implements Initializable {
             System.out.println("Erro");
         }*/
         try {
-            writeToTextFile("data.txt", nhanvienListAll);
+            writeToTextFile("data.txt", nhanVienListAll);
         } catch (IOException e) {
             e.printStackTrace();
         }
